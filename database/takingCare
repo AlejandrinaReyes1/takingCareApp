@@ -1,0 +1,101 @@
+USE takingcare;
+
+CREATE TABLE Cliente(
+    id_cliente INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Comidas(
+    id_comida INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL, -- nombre de lo que si comi
+    tipo ENUM('Desayuno','Comida','Cena','Snack') NOT NULL,
+    fecha DATE NOT NULL,
+    id_cliente INT NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+  -- esta tabla es para ingresar la informacion de la recomendacion que se me dio
+CREATE TABLE Comidas_Recomendacion(
+    id_recomendacion INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL, -- del platillo ej cereal, en java: si se me recomendo un plato y lo tome que no se repita esa semana la recomendacion
+    tipo ENUM('Desayuno','Comida','Cena','Snack') NOT NULL, -- lo que fue
+    fecha DATE NOT NULL,
+    recomendacion_tomada BOOLEAN NOT NULL,
+    id_cliente INT NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+
+CREATE TABLE Vitaminas(
+    id_vitamina INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    cantidadDiasToma INT NOT NULL,
+    fecha DATE NOT NULL,
+    id_cliente INT NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+
+CREATE TABLE EstadoEmocional(
+    id_estado INT PRIMARY KEY AUTO_INCREMENT,
+    emocionSentida ENUM(
+        'Feliz',
+        'Triste',
+        'Ansioso',
+        'Enojado',
+        'Cansado',
+        'Motivado',
+        'Neutral'
+    ) NOT NULL,
+    periodo_menstrual BOOLEAN,
+    ovulacion BOOLEAN,
+    fecha DATE NOT NULL,
+    id_cliente INT NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+
+CREATE TABLE EstadoFisico(
+    id_estado INT PRIMARY KEY AUTO_INCREMENT,
+    dolencia_presencia BOOLEAN NOT NULL,
+    dolenciaNombre VARCHAR(50),
+	nivelEnergia ENUM(
+        'Bajo',
+        'Medio',
+        'Alto'
+    ),
+    fecha DATE NOT NULL,
+    id_cliente INT NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+
+CREATE TABLE Sueno(
+    id_sueno INT PRIMARY KEY AUTO_INCREMENT,
+    cantidadHorasSueno DECIMAL(4,2) NOT NULL,
+    hora_despertar DATETIME NOT NULL,
+    hora_dormir DATETIME NOT NULL,
+    sensacion_descanso BOOLEAN,
+	ansiedad_nocturna BOOLEAN,
+    id_cliente INT NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+
+CREATE TABLE EjercicioFisico(
+    id_ejercicio INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    tipo_ejercicio ENUM(
+        'Cardio',
+        'Fuerza',
+        'Estiramiento',
+        'Deporte',
+        'Otro'
+    ),
+    fecha_hora DATETIME NOT NULL,
+	duracion TIME,
+	intensidad ENUM(
+        'Baja',
+        'Media',
+        'Alta'
+    ),
+    id_cliente INT NOT NULL,
+	FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+
+-- todas mis tablas pertenecen al cliente (yo)
